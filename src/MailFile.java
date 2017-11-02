@@ -33,6 +33,8 @@ public class MailFile {
         this.hostname = properties.getProperty("hostname");
         this.portnummer = properties.getProperty("portnummer");
         this.passwort = "Klient2017";
+        this.mailrec = mailrec;
+        this.path = path;
 //        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 //        try {
 //            this.passwort =  in.readLine();
@@ -44,11 +46,15 @@ public class MailFile {
         System.out.println(hostname);
         System.out.println(portnummer);
         System.out.println(passwort);
+        System.out.println(mailrec);
+        System.out.println(path);
 
     }
 
     public static void main(String argv[]) throws UnknownHostException, IOException{
-        MailFile s = new MailFile("mail.properties", "mail.asdasdasd");
+        String mailRec = argv[0];
+        String filePath =  argv[1];
+        MailFile s = new MailFile(mailRec, filePath);
         String encodedUser = Base64.getEncoder().encodeToString(benutzername.getBytes());
         String encodedPW = Base64.getEncoder().encodeToString(passwort.getBytes());
         String encoded = encodedUser + encodedPW;
@@ -56,7 +62,6 @@ public class MailFile {
         SSLSocket sslsocket =(SSLSocket) factory.createSocket("mailgate.informatik.haw-hamburg.de",465);
         DataOutputStream outToServer = new DataOutputStream(sslsocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(sslsocket.getInputStream()));
-
 
         System.out.println(inFromServer.readLine());
         outToServer.writeBytes("EHLO abv313" + '\n');
